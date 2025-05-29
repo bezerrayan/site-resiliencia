@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - Resiliência F.C</title>
+    <link rel="shortcut icon" href="src/escudo_escolinha_-removebg-preview.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="src/escudo_escolinha_-removebg-preview.png" alt="Escudo da Escolinha" class="logo-img">
+                    <strong>Resiliencia F.C</strong>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Início</a>
+                    <a href="login.html">Área do Aluno</a>
+                    <a href="sobre.html">Sobre</a>
+                    <a href="noticias.html">Notícias</a>
+                    <a href="planos.html">Planos</a>
+                    <a href="contato.html">Contato</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="contato-hero">
+            <h1 class="section-title">Entre em Contato</h1>
+            <p class="contato-intro">Estamos aqui para responder suas dúvidas e ajudar no desenvolvimento do seu atleta</p>
+        </section>
+
+        <section class="contato-grid">
+            <div class="contato-info">
+                <h2>Informações de Contato</h2>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h3>Telefone</h3>
+                        <p>(61) 8334-7937</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h3>E-mail</h3>
+                        <p>fcresiliencia@gmail.com</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Endereço</h3>
+                        <p>Brasília, DF</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h3>Horário de Atendimento</h3>
+                        <p>Segunda a Sexta: 8h às 18h</p>
+                        <p>Sábado: 8h às 12h</p>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="contato-form">
+                <h2>Envie sua Mensagem</h2>
+                <form id="contatoForm">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+                        <span class="error-message">Por favor, digite seu nome completo</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="Digite seu melhor e-mail" required>
+                        <span class="error-message">Por favor, digite um e-mail válido</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                        <span class="error-message">Por favor, digite um telefone válido</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="assunto">Assunto</label>
+                        <input type="text" id="assunto" name="assunto" placeholder="Qual o assunto da sua mensagem?" required>
+                        <span class="error-message">Por favor, digite o assunto da mensagem</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" name="mensagem" placeholder="Digite sua mensagem aqui..." required></textarea>
+                        <span class="error-message">Por favor, digite sua mensagem</span>
+                    </div>
+                    
+                    <button type="submit" class="btn-enviar">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Mensagem
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="mapa-section">
+            <h2 class="section-title">Nossa Localização</h2>
+            <div class="mapa-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3839.1234567890123!2d-47.8901234!3d-15.7890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTXCsDQ3JzIwLjQiUyA0N8KwNTMnMjAuNCJX!5e0!3m2!1spt-BR!2sbr!4v1234567890" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Resiliencia F.C</h3>
+                <p>Formando atletas e cidadãos desde 2022</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/resilienciabrasilia" target="_blank" class="social-icon" title="Siga-nos no Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/556183347937" target="_blank" class="social-icon" title="Fale conosco no WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://facebook.com/resilienciabrasilia" target="_blank" class="social-icon" title="Curta nossa página no Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://youtube.com/@resilienciabrasilia5019" target="_blank" class="social-icon" title="Inscreva-se no nosso canal">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contatos</h3>
+                <div class="contact-info">
+                    <i class="fas fa-phone"></i>
+                    <p>(61) 8334-7937</p>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <p>contato@escolinhadefutebol.com</p>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Brasília, DF</p>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="planos.html">Planos</a></li>
+                    <li><a href="noticias.html">Notícias</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Resiliencia F.C Escolinha de Futebol. Todos os direitos reservados.</p>
+            <p>Desenvolvido por: Yan e João</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="contato.js"></script>
+</body>
+</html>
