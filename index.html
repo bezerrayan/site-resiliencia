@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resiliencia F.C</title>
+  <link rel="shortcut icon" href="src/escudo_escolinha_-removebg-preview.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="login.html">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <img src="src/escudo_escolinha_-removebg-preview.png" alt="Escudo da Escolinha" class="logo-img">
+          <strong>Resiliencia F.C</strong>
+        </div>
+        <div class="nav-links">
+          <a href="#home">Início</a>
+          <a href="login.html">Area do aluno</a>
+          <a href="sobre.html">Sobre</a>
+          <a href="noticias.html">Notícias</a>
+          <a href="planos.html">Planos</a>
+          <a href="contato.html">Contato</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="mobile-menu">
+          <div class="line1"></div>
+          <div class="line2"></div>
+          <div class="line3"></div>
+        </div>
+        <ul class="nav-list">
+          <li><a href="#">Área do aluno</a></li>
+          <li><a href="#">Planos</a></li>
+          <li><a href="#">Notícias</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Sobre</a></li>
+
+          
+        </ul>
+
+ <script src="mobile-navbar.js"></script>
+
+
+
+  </header>
+
+  <script src="script.js"></script>
+
+
+  <section id="home" class="hero">
+  <div class="carousel-minimal">
+    <div class="carousel-slide-minimal active" data-slide="formando-atletas">
+      <img src="src/time.jpg" alt="Formando Atletas e Cidadãos">
+      <div class="carousel-caption-minimal">
+        <h2>Formando Atletas e Cidadãos</h2>
+        <p>Desenvolvimento completo através do esporte, formando não apenas atletas, mas cidadãos de bem.</p>
+        <a href="#" class="carousel-btn-more">Ver mais detalhes</a>
+      </div>
+    </div>
+    <div class="carousel-slide-minimal" data-slide="todas-idades">
+      <img src="src/time1.jpg" alt="Turmas para Todas as Idades">
+      <div class="carousel-caption-minimal">
+        <h2>Turmas para Todas as Idades</h2>
+        <p>Treinamento especializado para cada faixa etária.</p>
+        <a href="#" class="carousel-btn-more">Ver mais detalhes</a>
+      </div>
+    </div>
+    <div class="carousel-slide-minimal" data-slide="estrutura">
+      <img src="src/img.todos.jpg" alt="Estrutura Completa">
+      <div class="carousel-caption-minimal">
+        <h2>Estrutura Completa</h2>
+        <p>Infraestrutura de primeira linha para nossos atletas.</p>
+        <a href="#" class="carousel-btn-more">Ver mais detalhes</a>
+      </div>
+    </div>
+    <div class="carousel-slide-minimal" data-slide="conquistas">
+      <img src="src/time3.jpg" alt="Resultados e Conquistas">
+      <div class="carousel-caption-minimal">
+        <h2>Resultados e Conquistas</h2>
+        <p>Nossa história é construída com dedicação, suor e vitórias.</p>
+        <a href="#" class="carousel-btn-more">Ver mais detalhes</a>
+      </div>
+    </div>
+    <button class="carousel-arrow-minimal prev">&#10094;</button>
+    <button class="carousel-arrow-minimal next">&#10095;</button>
+    <div class="carousel-dots-minimal"></div>
+  </div>
+
+  <!-- Modal para detalhes -->
+  <div class="modal" id="gameModal">
+    <div class="modal-content">
+      <!-- Conteúdo será inserido dinamicamente via JavaScript -->
+    </div>
+  </div>
+</section>
+
+  <section id="noticias" class="container">
+    <h2 class="section-title">Últimas Notícias</h2>
+    <div id="noticias-container" class="noticias-grid">
+      <div class="card">
+        <div class="card-image">
+          <img src="src/torneio.jpg" alt="Torneio Interno">
+        </div>
+        <div class="card-content">
+          <span class="card-date">15 de Março, 2024</span>
+          <h3>Torneio Interno</h3>
+          <p>Nosso torneio interno será realizado no próximo sábado! Participe e venha torcer pelos nossos atletas.</p>
+          <a href="#" class="btn-saiba-mais">Saiba mais</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-image">
+          <img src="src/campeonato.jpg" alt="Campeonato Regional">
+        </div>
+        <div class="card-content">
+          <span class="card-date">10 de Março, 2024</span>
+          <h3>Campeonato Regional</h3>
+          <p>Nossa equipe sub-15 conquistou o 2º lugar no Campeonato Regional! Parabéns aos nossos guerreiros!</p>
+          <a href="#" class="btn-saiba-mais">Ver resultados</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-image">
+          <img src="src/bola.jpg" alt="Novos Horários">
+        </div>
+        <div class="card-content">
+          <span class="card-date">5 de Março, 2024</span>
+          <h3>Novos Horários de Treino</h3>
+          <p>Confira os novos horários de treino para todas as categorias a partir do próximo mês.</p>
+          <a href="#" class="btn-saiba-mais">Ver horários</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resultados" class="container">
+    <h2 class="section-title">Últimos Resultados</h2>
+    <div class="resultados-grid">
+      <div class="resultado-card">
+        <div class="resultado-header">
+          <span> Copa Interclubes Sub-10 </span>
+        </div>
+        <div class="resultado-content">
+          <div class="time">
+            <img src="src/escudo_escolinha_-removebg-preview.png" alt="Resiliência FC">
+            <span>Resiliência FC</span>
+          </div>
+          <div class="placar">
+            <span>6 - 0</span>
+          </div>
+          <div class="time">
+            <img src="src/outro time 1.png" alt="Outro Time">
+            <span>Brasilia Futsal </span>
+          </div>
+        </div>
+        <div class="resultado-footer">
+          <span>18/05/2025  - Estádio Municipal</span>
+        </div>
+      </div>
+
+      <div class="resultado-card">
+        <div class="resultado-header">
+          <span> Copa Interclubes Sub-13 </span>
+        </div>
+        <div class="resultado-content">
+          <div class="time">
+            <img src="src/escudo_escolinha_-removebg-preview.png" alt="Resiliência FC">
+            <span>Resiliência FC</span>
+          </div>
+          <div class="placar">
+            <span>0 - 6</span>
+          </div>
+          <div class="time">
+            <img src="src/scjm-removebg-preview.png" alt="Outro Time">
+            <span>Esporte Clube</span>
+          </div>
+        </div>
+        <div class="resultado-footer">
+          <span>18/05/2025 - </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calendario" class="container">
+    <h2 class="section-title">Próximos Jogos</h2>
+    <div class="calendario-grid">
+      <div class="calendario-card">
+        <div class="data">
+          <span class="dia">20</span>
+          <span class="mes">MAR</span>
+        </div>
+        <div class="jogo-info">
+          <span class="competicao">Copa Regional</span>
+          <div class="jogo-item">
+            <div class="data-jogo">
+              <span class="dia">20</span>
+              <span class="mes">MAR</span>
+            </div>
+            <div class="detalhes-jogo">
+              <h3>Resiliência F.C vs Águia F.C</h3>
+              <p><i class="fas fa-map-marker-alt"></i> Campo Municipal</p>
+              <p><i class="fas fa-clock"></i> 15:00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calendario-card">
+        <div class="data">
+          <span class="dia">27</span>
+          <span class="mes">MAR</span>
+        </div>
+        <div class="jogo-info">
+          <span class="competicao">Torneio Interno</span>
+          <div class="jogo-item">
+            <div class="data-jogo">
+              <span class="dia">27</span>
+              <span class="mes">MAR</span>
+            </div>
+            <div class="detalhes-jogo">
+              <h3>Categoria Sub-13 - Final</h3>
+              <p><i class="fas fa-map-marker-alt"></i> CT Resiliência</p>
+              <p><i class="fas fa-clock"></i> 14:00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="localizacao" class="container">
+    <h2 class="section-title">Onde Treinamos</h2>
+    <div class="localizacao-container">
+      <div class="mapa-info">
+        <div class="endereco-card">
+          <i class="fas fa-map-marker-alt"></i>
+          <h3>Local dos Treinos</h3>
+          <p>Quadra Poliesportiva da 214 Sul</p>
+          <p>Asa Sul, Brasília - DF</p>
+          <p>CEP: 70293-000</p>
+          <a href="https://maps.app.goo.gl/JR2FB9wTFndURnVM8" target="_blank" class="btn-como-chegar">
+            <i class="fas fa-directions"></i>
+            Como Chegar
+          </a>
+        </div>
+        <div class="horarios-card">
+          <i class="fas fa-clock"></i>
+          <h3>Horários de Treino</h3>
+          <ul>
+            <li><strong>Terça e Quinta:</strong></li>
+            <li><strong>Sub 07:</strong> 18:30h às 19:20h</li>
+            <li><strong>Sub 10:</strong> 19:20h às 20:10h</li>
+            <li><strong>Sub 13:</strong> 20:10h às 21h</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mapa-container">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d959.7888784407178!2d-47.89007343040563!3d-15.816697699999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935a2547a13aa5e9%3A0x6463e4a4d27952ac!2sQuadra%20214%20Sul%20Bras%C3%ADlia%2C%20DF%2C%2070293-000!5e0!3m2!1spt-BR!2sbr!4v1710804497953!5m2!1spt-BR!2sbr"
+          width="100%" 
+          height="450" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <section id="Quem somos " class="container">
+
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Resiliencia F.C</h3>
+        <p>Formando atletas e cidadãos desde 2022</p>
+        <div class="social-links">
+          <a href="https://instagram.com/resilienciabrasilia" target="_blank" class="social-icon" title="Siga-nos no Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://wa.me/556183347937" target="_blank" class="social-icon" title="Fale conosco no WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="https://facebook.com/resilienciabrasilia" target="_blank" class="social-icon" title="Curta nossa página no Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://youtube.com/@resilienciabrasilia5019" target="_blank" class="social-icon" title="Inscreva-se no nosso canal">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Links Rápidos</h3>
+        <ul>
+          <li><a href="#home">Início</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#planos">Planos</a></li>
+          <li><a href="#noticias">Notícias</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>Contato</h3>
+        <div class="contato-info">
+          <p><i class="fas fa-phone"></i> (61) 8334-7937</p>
+          <p><i class="fas fa-envelope"></i> resilienciabrasilia@gmail.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> Quadra 214 Sul, Brasília - DF</p>
+          <p><i class="fas fa-clock"></i> Terça e Quinta: 18:30h às 21h</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 Resiliencia F.C Escolinha de Futebol. Todos os direitos reservados.</p>
+      <p>Desenvolvido por: Yan e João</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="contato.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

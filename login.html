@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Aluno - Resiliência F.C</title>
+    <link rel="shortcut icon" href="src/escudo_escolinha_-removebg-preview.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="src/escudo_escolinha_-removebg-preview.png" alt="Escudo da Escolinha" class="logo-img">
+                    <strong>Resiliencia F.C</strong>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Início</a>
+                    <a href="login.html">Área do Aluno</a>
+                    <a href="sobre.html">Sobre</a>
+                    <a href="noticias.html">Notícias</a>
+                    <a href="planos.html">Planos</a>
+                    <a href="contato.html">Contato</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="login-section">
+            <div class="login-container">
+                <div class="login-header">
+                    <h1>Área do Aluno</h1>
+                    <p>Acesse para acompanhar o desenvolvimento do seu atleta</p>
+                </div>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="senha" name="senha" required>
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="lembrar">
+                            <span>Lembrar-me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                    </div>
+                    <button type="submit" class="btn-login">Entrar</button>
+                </form>
+                <div class="login-footer">
+                    <p>Não tem uma conta? <a href="#" class="register-link">Fale com a secretaria</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Resiliencia F.C</h3>
+                <p>Formando atletas e cidadãos desde 2022</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/resilienciabrasilia" target="_blank" class="social-icon" title="Siga-nos no Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/556183347937" target="_blank" class="social-icon" title="Fale conosco no WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://facebook.com/resilienciabrasilia" target="_blank" class="social-icon" title="Curta nossa página no Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://youtube.com/@resilienciabrasilia5019" target="_blank" class="social-icon" title="Inscreva-se no nosso canal">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contatos</h3>
+                <div class="contact-info">
+                    <i class="fas fa-phone"></i>
+                    <p>(61) 8334-7937</p>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <p>fcresiliencia@gmail.com</p>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Brasília, DF</p>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="planos.html">Planos</a></li>
+                    <li><a href="noticias.html">Notícias</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Resiliencia F.C Escolinha de Futebol. Todos os direitos reservados.</p>
+            <p>Desenvolvido por: Yan e João</p>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle password visibility
+        document.querySelector('.toggle-password').addEventListener('click', function() {
+            const passwordInput = document.querySelector('#senha');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Aqui você pode adicionar a lógica de autenticação
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>

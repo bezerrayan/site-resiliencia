@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Resiliência F.C</title>
+    <link rel="shortcut icon" href="src/escudo_escolinha_-removebg-preview.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="src/escudo_escolinha_-removebg-preview.png" alt="Escudo da Escolinha" class="logo-img">
+                    <strong>Resiliencia F.C</strong>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Início</a>
+                    <a href="login.html">Área do Aluno</a>
+                    <a href="sobre.html">Sobre</a>
+                    <a href="noticias.html">Notícias</a>
+                    <a href="planos.html">Planos</a>
+                    <a href="contato.html">Contato</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="dashboard-section">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <h1>Bem-vindo(a), Yan Bezerra</h1>
+                    <p>Responsável por: Antonio Tomáz  (Sub-10)</p>
+                </div>
+                <button class="btn-logout">Sair</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Status da Mensalidade -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <h2>Status da Mensalidade</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="status-info">
+                            <span class="status-badge atrasado">Atrasado</span>
+                            <p>Último pagamento: 10/05/2025</p>
+                            <p>Próximo vencimento: 10/06/2025</p>
+                            <p class="valor">Valor: R$ 100,00</p>
+                        </div>
+                        <button class="btn-pagar">Pagar Agora</button>
+                    </div>
+                </div>
+
+                <!-- Próximos Jogos -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-futbol"></i>
+                        <h2>Próximos Jogos</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="jogo-info">
+                            <div class="jogo-item">
+                                <div class="data-jogo">
+                                    <span class="dia">20</span>
+                                    <span class="mes">MAR</span>
+                                </div>
+                                <div class="detalhes-jogo">
+                                    <h3>Resiliência F.C vs Águia F.C</h3>
+                                    <p><i class="fas fa-map-marker-alt"></i> Campo Municipal</p>
+                                    <p><i class="fas fa-clock"></i> 15:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desempenho -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h2>Desempenho</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="desempenho-info">
+                            <div class="desempenho-item">
+                                <span class="label">Presença</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 100%"></div>
+                                </div>
+                                <span class="value">100%</span>
+                            </div>
+                            <div class="desempenho-item">
+                                <span class="label">Técnica</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 90%"></div>
+                                </div>
+                                <span class="value">90%</span>
+                            </div>
+                            <div class="desempenho-item">
+                                <span class="label">Comportamento</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 80%"></div>
+                                </div>
+                                <span class="value">80%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Horários de Treino -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h2>Horários de Treino</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="horarios-info">
+                            <div class="horario-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h3>Terça e Quinta</h3>
+                                    <p>18:40 - 20:30</p>
+                                </div>
+                            </div>
+                            <div class="horario-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h3>Sábado</h3>
+                                    <p>09:00 - 10:30</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Resiliencia F.C</h3>
+                <p>Formando atletas e cidadãos desde 2022</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/resilienciabrasilia" target="_blank" class="social-icon" title="Siga-nos no Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/556183347937" target="_blank" class="social-icon" title="Fale conosco no WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://facebook.com/resilienciabrasilia" target="_blank" class="social-icon" title="Curta nossa página no Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://youtube.com/@resilienciabrasilia5019" target="_blank" class="social-icon" title="Inscreva-se no nosso canal">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contatos</h3>
+                <div class="contact-info">
+                    <i class="fas fa-phone"></i>
+                    <p>(61) 8334-7937</p>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <p>fcresiliencia@gmail.com</p>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Brasília, DF</p>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="planos.html">Planos</a></li>
+                    <li><a href="noticias.html">Notícias</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Resiliencia F.C Escolinha de Futebol. Todos os direitos reservados.</p>
+            <p>Desenvolvido por: Yan e João</p>
+        </div>
+    </footer>
+
+    <script>
+        // Logout functionality
+        document.querySelector('.btn-logout').addEventListener('click', function() {
+            if(confirm('Deseja realmente sair?')) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Payment button functionality
+        document.querySelector('.btn-pagar').addEventListener('click', function() {
+            alert('Redirecionando para o sistema de pagamento...');
+            // Aqui você pode adicionar a lógica de redirecionamento para o sistema de pagamento
+        });
+    </script>
+</body>
+</html> 
