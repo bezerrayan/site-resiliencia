@@ -57,6 +57,18 @@ a:hover {
 @media (max-width: 768px) {
   body {
     overflow-x: hidden;
+    width: 100%;
+  }
+
+  .container {
+    padding: 0 1rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  nav {
+    padding: 0 1rem;
+    width: 100%;
   }
   
   .nav-list {
@@ -64,24 +76,27 @@ a:hover {
     position: fixed;
     top: 0;
     right: 0;
-    width: 70vw;
+    width: 85vw;
     height: 100vh;
     background: linear-gradient(135deg, #031631 0%, #1976d2 100%);
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     transform: translateX(100%);
     transition: transform 0.5s ease-in-out;
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
+    padding: 6rem 1rem 2rem 1rem;
     z-index: 1002;
+    overflow-y: auto;
   }
 
   .nav-list li {
-    margin: 2.2rem 0 !important;
+    margin: 1.5rem 0 !important;
     opacity: 0;
     transform: translateX(50px);
     pointer-events: none;
+    width: 100%;
+    text-align: center;
   }
 
   .nav-list.active {
@@ -97,11 +112,13 @@ a:hover {
 
   .nav-list li a {
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 500;
     padding: 0.5rem 1rem;
     border-radius: 25px;
     transition: all 0.3s ease;
+    display: block;
+    width: 100%;
   }
 
   .nav-list li a:hover {
@@ -110,24 +127,26 @@ a:hover {
   }
 
   .mobile-menu {
+    display: block;
+    cursor: pointer;
     position: absolute;
-    right: 0;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 1001;
   }
 
   .mobile-menu div {
-    width: 28px;
-    height: 3px;
+    width: 24px;
+    height: 2px;
     background: #fff;
-    margin: 6px;
+    margin: 5px;
     transition: 0.3s;
     border-radius: 3px;
   }
 
   .mobile-menu.active .line1 {
-    transform: rotate(-45deg) translate(-8px, 8px);
+    transform: rotate(-45deg) translate(-6px, 6px);
     background: #fff;
   }
 
@@ -136,7 +155,7 @@ a:hover {
   }
 
   .mobile-menu.active .line3 {
-    transform: rotate(45deg) translate(-5px, -7px);
+    transform: rotate(45deg) translate(-4px, -5px);
     background: #fff;
   }
 
@@ -145,7 +164,7 @@ a:hover {
     position: fixed;
     top: 0;
     right: 0;
-    width: 70vw;
+    width: 85vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(6px);
@@ -153,6 +172,7 @@ a:hover {
     opacity: 0;
     transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1);
   }
+
   .overlay.active {
     display: block;
     opacity: 1;
@@ -168,23 +188,16 @@ a:hover {
     animation: menuLogoFadeIn 0.8s cubic-bezier(0.4,0,0.2,1) forwards;
     animation-delay: 0.2s;
     pointer-events: none;
-    position: static;
-    top: auto;
-    left: auto;
-    width: auto;
-    height: auto;
-    background: none;
-    border-radius: 0;
-    box-shadow: none;
-    z-index: auto;
   }
+
   .nav-list.active .menu-logo {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
   }
+
   .menu-logo img {
-    width: 70px;
+    width: 60px;
     height: auto;
     border-radius: 50%;
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
@@ -192,8 +205,38 @@ a:hover {
     padding: 6px;
     object-fit: contain;
   }
+}
+
+@media (max-width: 320px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  nav {
+    padding: 0 0.5rem;
+  }
+
+  .mobile-menu {
+    right: 10px;
+  }
+
+  .mobile-menu div {
+    width: 22px;
+    margin: 4px;
+  }
+
   .nav-list {
-    padding-top: 0;
+    width: 90vw;
+    padding: 5rem 0.5rem 1rem 0.5rem;
+  }
+
+  .nav-list li a {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .menu-logo img {
+    width: 50px;
   }
 }
 
@@ -451,6 +494,8 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
+  position: relative;
+  z-index: 1002;
 }
 
 .logo-img {
@@ -462,6 +507,7 @@ nav {
   font-size: 1.3rem;
   font-weight: 600;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .nav-links {
@@ -857,19 +903,17 @@ nav a:hover::after {
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     margin-top: -5px;
   }
 
   .logo-img {
-    height: 35px;
+    height: 30px;
     width: auto;
   }
 
   .logo strong {
-    font-size: 1.3rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-size: 1.1rem;
   }
 
   .nav-links {
@@ -1710,6 +1754,8 @@ nav a:hover::after {
     margin: 0.5rem 0;
 }
 
+
+
 /* Responsividade */
 @media (max-width: 768px) {
     .noticia-principal {
@@ -1730,6 +1776,7 @@ nav a:hover::after {
 }
 
 /* Estilos para a página de notícia completa */
+/* Estilos para a página de notícia completa */
 .noticia-completa {
     background: white;
     border-radius: 15px;
@@ -1744,7 +1791,7 @@ nav a:hover::after {
 }
 
 .noticia-titulo {
-    color: #2c3e50;
+    color: #044a83;
     font-size: 2.5rem;
     margin: 1rem 0;
 }
@@ -1769,7 +1816,7 @@ nav a:hover::after {
 }
 
 .noticia-conteudo h2 {
-    color: #2c3e50;
+    color: #044a83;
     font-size: 1.8rem;
     margin: 2rem 0 1rem;
     padding-bottom: 0.5rem;
@@ -1804,7 +1851,7 @@ nav a:hover::after {
 }
 
 .programacao-lista i {
-    color: #3498db;
+    color: #2977dd;
     font-size: 1.2rem;
 }
 
@@ -1829,12 +1876,12 @@ nav a:hover::after {
 
 .categoria-card i {
     font-size: 2.5rem;
-    color: #3498db;
+    color: #2977dd;
     margin-bottom: 1rem;
 }
 
 .categoria-card h3 {
-    color: #2c3e50;
+    color: #044a83;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
@@ -1856,7 +1903,7 @@ nav a:hover::after {
 }
 
 .premiacoes-lista i {
-    color: #3498db;
+    color: #2977dd;
     font-size: 1.2rem;
 }
 
@@ -1875,7 +1922,7 @@ nav a:hover::after {
 }
 
 .info-importante i {
-    color: #3498db;
+    color: #2977dd;
     font-size: 1.2rem;
 }
 
@@ -1898,7 +1945,7 @@ nav a:hover::after {
 .btn-contato {
     display: inline-block;
     padding: 1rem 2rem;
-    background: #3498db;
+    background: #2977dd;
     color: white;
     text-decoration: none;
     border-radius: 25px;
@@ -1907,7 +1954,7 @@ nav a:hover::after {
 }
 
 .btn-contato:hover {
-    background: #2980b9;
+    background: #1a5cb3;
     transform: translateY(-2px);
 }
 
@@ -2453,3 +2500,386 @@ nav a:hover::after {
     padding: 1rem;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilos para a página de Login */
+.login-section {
+    min-height: calc(100vh - 300px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    margin-top: 80px;
+    background: linear-gradient(135deg, rgba(3, 22, 49, 0.05) 0%, rgba(25, 118, 210, 0.05) 100%);
+}
+
+.login-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-header h1 {
+    color: #031631;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.login-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 1rem;
+    color: #666;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-with-icon input:focus {
+    border-color: #1976d2;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.toggle-password {
+    position: absolute !important;
+    right: 1rem !important;
+    left: auto !important;
+    cursor: pointer;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+}
+
+.forgot-password {
+    color: #1976d2;
+    font-size: 0.9rem;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(90deg, #031631 0%, #1976d2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background: linear-gradient(90deg, #00325c 0%, #1565c0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.login-footer p {
+    color: #666;
+}
+
+.register-link {
+    color: #1976d2;
+    font-weight: 500;
+}
+
+/* Estilos do Dashboard */
+.dashboard-section {
+    padding: 2rem;
+    margin-top: 80px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.user-info h1 {
+    color: #031631;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.user-info p {
+    color: #666;
+}
+
+.btn-logout {
+    padding: 0.8rem 1.5rem;
+    background: #f5f5f5;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-logout:hover {
+    background: #e0e0e0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-header i {
+    font-size: 1.5rem;
+    color: #1976d2;
+}
+
+.card-header h2 {
+    color: #031631;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.status-info {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.status-badge.atrasado {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-badge.em-dia {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.valor {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #031631;
+    margin-top: 0.5rem;
+}
+
+.btn-pagar {
+    width: 100%;
+    padding: 0.8rem;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-pagar:hover {
+    background: #1565c0;
+    transform: translateY(-2px);
+}
+
+.jogo-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.data-jogo {
+    text-align: center;
+    min-width: 60px;
+}
+
+.dia {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #031631;
+}
+
+.mes {
+    display: block;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.detalhes-jogo h3 {
+    color: #031631;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.detalhes-jogo p {
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.desempenho-item {
+    margin-bottom: 1.5rem;
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.3rem;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, #1976d2 0%, #00325c 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.value {
+    font-size: 0.9rem;
+    color: #031631;
+    font-weight: 500;
+}
+
+.horario-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.horario-item i {
+    font-size: 1.5rem;
+    color: #031631;
+}
+
+.horario-item h3 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.horario-item p {
+    color: #666;
+}
+
+
+
+
+
+
+
+
+
+
