@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const slideCount = slides.length;
   let autoPlayInterval;
 
+  // Limpa os dots existentes antes de criar
+  dotsContainer.innerHTML = "";
+
   // Criar dots
   slides.forEach((_, index) => {
     const dot = document.createElement('div');
@@ -63,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
     dotsContainer.appendChild(dot);
   });
 
-  const dots = document.querySelectorAll('.dot-minimal');
+  const dots = dotsContainer.querySelectorAll('.dot-minimal');
 
   // Função para ir para um slide específico
   function goToSlide(index) {
