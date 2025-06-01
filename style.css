@@ -182,7 +182,7 @@ a:hover {
   padding: 6px;
   object-fit: contain;
 }
-}
+
 
 @media (max-width: 320px) {
   .container {
@@ -2092,6 +2092,13 @@ nav a:hover::after {
 
   header .container {
     padding: 1rem;
+  }
+
+  .logo {
+    top: 2px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
