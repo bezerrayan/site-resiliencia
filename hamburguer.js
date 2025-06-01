@@ -30,20 +30,29 @@ document.addEventListener('DOMContentLoaded', function() {
     animateLinks(false);
   }
 
-  mobileMenu.addEventListener('click', function() {
-    if (navList.classList.contains('active')) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  });
+  if (mobileMenu) {
+    mobileMenu.addEventListener('click', function() {
+      if (navList.classList.contains('active')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+  }
 
-  overlay.addEventListener('click', closeMenu);
+  if (overlay) {
+    overlay.addEventListener('click', closeMenu);
+  }
 
   // Fecha o menu ao redimensionar para desktop
   window.addEventListener('resize', function() {
     if (window.innerWidth > 768) {
       closeMenu();
     }
+  });
+
+  // Fecha o menu ao clicar em um link
+  navLinks.forEach(link => {
+    link.addEventListener('click', closeMenu);
   });
 });
