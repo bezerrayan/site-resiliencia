@@ -1,4 +1,3 @@
-// Inicializa o EmailJS com sua chave pública
 emailjs.init("YOUR_PUBLIC_KEY"); // Substitua YOUR_PUBLIC_KEY pela sua chave pública do EmailJS
 
 function enviarEmail(e) {
@@ -51,4 +50,4 @@ function enviarEmail(e) {
 const contatoForm = document.getElementById('contatoForm');
 if (contatoForm) {
     contatoForm.addEventListener('submit', enviarEmail);
-} 
+}
