@@ -1,4 +1,3 @@
-/* Estilos do Carrossel */
 .carousel-minimal {
   position: relative;
   width: 100%;
@@ -2529,18 +2528,9 @@ body:has(.carousel-minimal) .mobile-menu {
   }
 }
 
+
 @media (max-width: 768px) {
   .contato-info {
     margin-bottom: 2rem;
   }
 }
-
-
-
-
-
-
-
-
-
-
