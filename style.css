@@ -1862,14 +1862,14 @@ nav a:hover::after {
 }
 
 .contato-form {
-    background: #fff;
+    background: #057ef0;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .contato-form h2 {
-    color: #333;
+    color: #ffffff;
     margin-bottom: 2rem;
     font-size: 1.8rem;
 }
@@ -1882,7 +1882,7 @@ nav a:hover::after {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #333;
+    color: #ffffff;
 }
 
 .form-group input,
@@ -2534,3 +2534,4 @@ body:has(.carousel-minimal) .mobile-menu {
     margin-bottom: 2rem;
   }
 }
+

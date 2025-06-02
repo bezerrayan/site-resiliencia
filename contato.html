@@ -93,42 +93,71 @@
 
             <div class="contato-form">
                 <h2>Envie sua Mensagem</h2>
-                <form id="contatoForm">
-                    <div class="form-group">
-                        <label for="nome">Nome Completo</label>
-                        <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
-                        <span class="error-message">Por favor, digite seu nome completo</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" placeholder="Digite seu melhor e-mail" required>
-                        <span class="error-message">Por favor, digite um e-mail válido</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
-                        <span class="error-message">Por favor, digite um telefone válido</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="assunto">Assunto</label>
-                        <input type="text" id="assunto" name="assunto" placeholder="Qual o assunto da sua mensagem?" required>
-                        <span class="error-message">Por favor, digite o assunto da mensagem</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="mensagem">Mensagem</label>
-                        <textarea id="mensagem" name="mensagem" placeholder="Digite sua mensagem aqui..." required></textarea>
-                        <span class="error-message">Por favor, digite sua mensagem</span>
-                    </div>
-                    
-                    <button type="submit" class="btn-enviar">
-                        <i class="fas fa-paper-plane"></i>
-                        Enviar Mensagem
-                    </button>
-                </form>
+          <form id="contatoForm">
+    <div class="form-group">
+        <label for="nome">Nome Completo</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+        <span class="error-message">Por favor, digite seu nome completo</span>
+    </div>
+
+    <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="Digite seu melhor e-mail" required>
+        <span class="error-message">Por favor, digite um e-mail válido</span>
+    </div>
+
+    <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+        <span class="error-message">Por favor, digite um telefone válido</span>
+    </div>
+
+    <div class="form-group">
+        <label for="assunto">Assunto</label>
+        <input type="text" id="assunto" name="assunto" placeholder="Qual o assunto da sua mensagem?" required>
+        <span class="error-message">Por favor, digite o assunto da mensagem</span>
+    </div>
+
+    <div class="form-group">
+        <label for="mensagem">Mensagem</label>
+        <textarea id="mensagem" name="mensagem" placeholder="Digite sua mensagem aqui..." required></textarea>
+        <span class="error-message">Por favor, digite sua mensagem</span>
+    </div>
+
+    <button type="submit" class="btn-enviar">
+        <i class="fas fa-paper-plane"></i>
+        Enviar Mensagem
+    </button>
+</form>
+
+<script>
+  document.getElementById('contatoForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Evita o envio padrão do formulário
+
+    const formData = new FormData(this);
+    const data = new URLSearchParams(formData).toString(); // Converte os dados para um formato adequado
+
+    try {
+      const response = await fetch('/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: data
+      });
+
+      const result = await response.text(); // Recebe a resposta do servidor
+      if (response.ok) {
+        alert('Mensagem enviada com sucesso!');
+        document.getElementById('contatoForm').reset(); // Reseta o formulário
+      } else {
+        alert('Erro ao enviar a mensagem: ' + result);
+      }
+    } catch (error) {
+      alert('Erro ao enviar mensagem');
+    }
+  });
+</script>
+
+
             </div>
         </section>
 
