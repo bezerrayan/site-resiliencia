@@ -5,12 +5,12 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-// Configurações do Nodemailer
+// Configurações do Nodemailer (e-mail que VAI ENVIAR)
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'seu-email@gmail.com',
-    pass: 'sua-senha-ou-app-password'
+    user: 'seu-email-de-envio@gmail.com', // <- troque por seu e-mail que vai enviar
+    pass: 'sua-senha-de-app'              // <- senha de app gerada no Google
   }
 });
 
@@ -30,8 +30,8 @@ app.post('/send-email', (req, res) => {
   const { nome, email, telefone, assunto, mensagem } = req.body;
 
   const mailOptions = {
-    from: 'seu-email@gmail.com',
-    to: 'seu-email@gmail.com',
+    from: 'seu-email-de-envio@gmail.com',   // <- tem que ser o mesmo do transporter
+    to: 'fcresiliencia@gmail.com',          // <- e-mail que vai RECEBER
     subject: assunto,
     text: `Mensagem recebida de ${nome} (${email}, ${telefone})\n\nMensagem:\n${mensagem}`
   };
