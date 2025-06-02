@@ -17,12 +17,12 @@ const transporter = nodemailer.createTransport({
 // Middleware para processar os dados do formulário
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Middleware para servir arquivos estáticos (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname)));
+// Servir arquivos estáticos da pasta "public"
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Rota para a página principal (ajuste para o nome da sua página principal)
+// Rota para a página principal
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Rota para envio de e-mail
@@ -51,4 +51,3 @@ app.post('/send-email', (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
-
