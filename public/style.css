@@ -1223,7 +1223,11 @@ nav a:hover::after {
 .noticias-hero {
     text-align: center;
     padding: 4rem 0;
-    background: linear-gradient(#ffffff 0%, #f5f5f5 10%,#e0ecf7 25%, #1976d2 60%, #00325c 100%), url('src/noticias-bg.jpg');
+    background: linear-gradient(#ffffff 0%, 
+  #f5f5f5 10%, 
+  #e0ecf7 25%, 
+  #1976d2 60%, 
+  #00325c 100%), url('src/noticias-bg.jpg');
     
     background-size: cover;
     background-position: center;
@@ -2535,3 +2539,48 @@ body:has(.carousel-minimal) .mobile-menu {
   }
 }
 
+/* Ajustes responsivos para os resultados */
+@media (max-width: 768px) {
+  .resultado-content {
+    padding: 1rem;
+  }
+
+  .time {
+    gap: 5px;
+  }
+
+  .time img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .time span {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .placar {
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .resultado-content {
+    padding: 0.8rem;
+  }
+
+  .time img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .time span {
+    font-size: 0.8rem;
+  }
+
+  .placar {
+    font-size: 1.3rem;
+    padding: 0 0.3rem;
+  }
+}
