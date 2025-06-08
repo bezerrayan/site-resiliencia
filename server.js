@@ -1,124 +1,58 @@
 const express = require('express');
+const { OAuth2Client } = require('google-auth-library');
+const session = require('express-session');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const path = require('path');
+require('dotenv').config();
+
 const app = express();
-const port = 3000;
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Configurações do Nodemailer (e-mail que VAI ENVIAR)
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'seu-email-de-envio@gmail.com', // <- troque por seu e-mail que vai enviar
-    pass: 'sua-senha-de-app'              // <- senha de app gerada no Google
-  }
-});
-
-// Middleware para processar os dados do formulário
+// Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Servir arquivos estáticos da pasta "public"
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Rota para a página principal
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Rota para envio de e-mail
-app.post('/send-email', (req, res) => {
-  const { nome, email, telefone, assunto, mensagem } = req.body;
-
-  const mailOptions = {
-    from: 'seu-email-de-envio@gmail.com',   // <- tem que ser o mesmo do transporter
-    to: 'fcresiliencia@gmail.com',          // <- e-mail que vai RECEBER
-    subject: assunto,
-    text: `Mensagem recebida de ${nome} (${email}, ${telefone})\n\nMensagem:\n${mensagem}`
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-      res.status(500).send('Erro ao enviar a mensagem');
-    } else {
-      console.log('E-mail enviado: ' + info.response);
-      res.status(200).send('Mensagem enviada com sucesso');
-    }
-  });
-});
-
-// Inicia o servidor
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
-});
-
-
-const express = require('express');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const session = require('express-session');
-const dotenv = require('dotenv');
-const path = require('path');
-
-dotenv.config();
-const app = express();
-
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
-
+app.use(express.json());
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'segredo',
   resave: false,
   saveUninitialized: false
 }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/auth/google/callback"
-},
-(accessToken, refreshToken, profile, done) => {
-  // Aqui você pode salvar o usuário no banco se quiser
-  return done(null, profile);
-}));
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-
-// Rotas de autenticação
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    res.redirect('/painel.html'); // redireciona se login for bem-sucedido
+// Rota para verificar ID token do Google
+app.post('/tokensignin', async (req, res) => {
+  const { token } = req.body;
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
+    const payload = ticket.getPayload();
+    req.session.user = { googleId: payload.sub, name: payload.name, email: payload.email };
+    return res.json({ name: payload.name, email: payload.email });
+  } catch (e) {
+    console.error('ID Token error:', e);
+    return res.status(401).json({ error: 'Invalid ID token' });
   }
-);
+});
 
-// Middleware para proteger rotas
+// Nodemailer setup (seu código existente)
+const transporter = nodemailer.createTransport({ /* ... */ });
+app.post('/send-email', (req, res) => { /* ... */ });
+
+// Autorização de rota para painel
 function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) return next();
+  if (req.session.user) return next();
   res.redirect('/');
 }
-
-// Rota protegida de exemplo
-app.get('/painel', isLoggedIn, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/painel.html'));
+app.get('/painel.html', isLoggedIn, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'painel.html'));
 });
 
-// Início
+// Rota raiz
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/login.html'));
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));

@@ -542,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Inicializa o botão de login do Google
 window.onload = function () {
   google.accounts.id.initialize({
-    client_id: "SEU_CLIENT_ID_AQUI", // substitua aqui
+    client_id: "387015858940-4vvdsandi9n2m8f36hak53j2emki2dfg.apps.googleusercontent.com", // substitua aqui
     callback: handleCredentialResponse
   });
 
