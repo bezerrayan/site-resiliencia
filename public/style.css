@@ -751,30 +751,32 @@ nav a:hover::after {
 }
 
 .footer-section h3 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #ffffff;
 }
 
 .line {
-  width: 40px;
+  width: 50px;
   height: 4px;
   background-color: #3b82f6;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   border-radius: 2px;
 }
 
+/* Texto destacado em branco */
 .footer-section p,
 .footer-section a {
-  font-size: 0.95rem;
-  color: #d1d5db;
+  font-size: 1rem;
+  color: #ffffff; /* destaque branco */
   margin-bottom: 10px;
   text-decoration: none;
 }
 
 .footer-section a:hover {
   text-decoration: underline;
-  color: #ffffff;
+  color: #3b82f6;
 }
 
 .footer-section ul {
@@ -789,25 +791,75 @@ nav a:hover::after {
 
 .social-links {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   margin-top: 15px;
 }
 
-.social-links i {
-  font-size: 1.3rem;
-  color: #d1d5db;
-  transition: color 0.3s;
+/* Ícones com fundo branco e formato circular */
+.social-links a {
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, background-color 0.3s;
 }
 
-.social-links i:hover {
-  color: #ffffff;
+.social-links a i {
+  font-size: 1.5rem;
+  color: #0a162f; /* ícone em cor escura para contraste */
+}
+
+.social-links a:hover {
+  transform: scale(1.1);
+  background-color: #3b82f6; /* muda fundo no hover para destaque */
+}
+
+.social-links a:hover i {
+  color: #ffffff; /* ícone branco no hover */
 }
 
 .footer-bottom {
   text-align: center;
   margin-top: 40px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #9ca3af;
+}
+
+/* Mobile specific overrides */
+@media (max-width: 576px) {
+  .footer {
+    padding: 40px 15px 20px;
+  }
+  .footer-section h3 {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+  .social-links {
+    justify-content: center;
+    gap: 15px;
+  }
+  .social-links a {
+    padding: 12px;
+  }
+  .social-links a i {
+    font-size: 2rem;
+  }
+  .footer-section p,
+  .footer-section a {
+    font-size: 0.95rem;
+    text-align: center;
+  }
+}
+
+/* Destaque suave para textos de Contatos e Links Rápidos */
+.footer-content > .footer-section:nth-child(2) p,
+.footer-content > .footer-section:nth-child(3) ul li a {
+  background-color: rgba(255, 255, 255, 0.322);
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
 }
 
 /* Seção de Localização */
