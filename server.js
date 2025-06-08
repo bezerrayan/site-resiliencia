@@ -51,3 +51,74 @@ app.post('/send-email', (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
+
+
+const express = require('express');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const session = require('express-session');
+const dotenv = require('dotenv');
+const path = require('path');
+
+dotenv.config();
+const app = express();
+
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "/auth/google/callback"
+},
+(accessToken, refreshToken, profile, done) => {
+  // Aqui você pode salvar o usuário no banco se quiser
+  return done(null, profile);
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// Rotas de autenticação
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/painel.html'); // redireciona se login for bem-sucedido
+  }
+);
+
+// Middleware para proteger rotas
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect('/');
+}
+
+// Rota protegida de exemplo
+app.get('/painel', isLoggedIn, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/painel.html'));
+});
+
+// Início
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/login.html'));
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

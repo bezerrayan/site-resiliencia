@@ -42,7 +42,12 @@
           <li><a href="noticias.html"><i class="fa-solid fa-newspaper"></i> Notícias</a></li>
           <li><a href="contato.html"><i class="fa-solid fa-envelope"></i> Contato</a></li>
           <li><a href="sobre.html"><i class="fa-solid fa-circle-info"></i> Sobre</a></li>
-          <script src="https://accounts.google.com/gsi/client" async defer></script>
+          <a href="/auth/google" class="inline-flex items-center bg-white border border-gray-300 text-gray-800 font-semibold px-4 py-2 rounded shadow hover:bg-gray-100 transition">
+  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="w-5 h-5 mr-2">
+  Entrar com Google
+</a>
+
+    
 
         </ul>
         <div class="overlay"></div>
@@ -76,7 +81,11 @@
                         </div>
                     </div>
 
-                   <div id="googleLoginBtn" style="margin-top: 20px;"></div>
+                        <a href="/auth/google">
+                           <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                              <i class="fab fa-google mr-2"></i> Entrar com Google
+                           </button>
+                        </a>
 
 
                     <div class="form-options">
@@ -87,6 +96,10 @@
                         <a href="#" class="forgot-password">Esqueceu a senha?</a>
                     </div>
                     <button type="submit" class="btn-login">Entrar</button>
+
+
+
+
                 </form>
                 <div class="login-footer">
                     <p>Não tem uma conta? <a href="#" class="register-link">Fale com a secretaria</a></p>
@@ -167,13 +180,8 @@
             window.location.href = 'dashboard.html';
         });
     </script>
-<script>
-  window.onload = function () {
-    google.accounts.id.initialize({
-      client_id: "SEU_CLIENT_ID_AQUI", // substitua isso pelo real
-      callback: handleCredentialResponse
-    });
 
+<script>
     google.accounts.id.renderButton(
       document.getElementById("googleLoginBtn"),
       {
@@ -181,7 +189,6 @@
         size: "large"
       }
     );
-  };
 
   function handleCredentialResponse(response) {
     const data = parseJwt(response.credential);
