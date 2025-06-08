@@ -647,7 +647,7 @@ nav a:hover::after {
 }
 
 .time img {
-  width: 60px;
+  width: 80px;
   height: 60px;
   object-fit: contain;
 }
@@ -856,7 +856,7 @@ nav a:hover::after {
 /* Destaque suave para textos de Contatos e Links Rápidos */
 .footer-content > .footer-section:nth-child(2) p,
 .footer-content > .footer-section:nth-child(3) ul li a {
-  background-color: rgba(255, 255, 255, 0.322);
+  background-color: rgba(255, 255, 255, 0.1);
   padding: 4px 8px;
   border-radius: 4px;
   display: inline-block;
