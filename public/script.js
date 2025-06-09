@@ -543,7 +543,9 @@ document.addEventListener('DOMContentLoaded', function() {
 window.onload = function () {
   google.accounts.id.initialize({
     client_id: "387015858940-4vvdsandi9n2m8f36hak53j2emki2dfg.apps.googleusercontent.com", // substitua aqui
-    callback: handleCredentialResponse
+  callbackURL: "https://site-resiliencia.onrender.com/auth/google/callback"
+
+
   });
 
   google.accounts.id.renderButton(
