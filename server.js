@@ -172,3 +172,25 @@ app.post('/alunos', isLoggedIn, async (req, res) => {
     res.status(500).json({ error: 'Erro interno ao cadastrar aluno' });
   }
 });
+
+
+// Rota para listar todos os alunos (somente usuários logados)
+app.get('/alunos', isLoggedIn, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        a.id, 
+        a.nome, 
+        a.idade, 
+        a.turma,
+        u.nome AS responsavel
+      FROM alunos a
+      JOIN usuarios u ON a.id_usuario = u.id
+      ORDER BY a.id;
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro ao listar alunos:', err);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
