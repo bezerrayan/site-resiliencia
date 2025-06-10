@@ -117,30 +117,41 @@
     </script>
 
     <script>
-        function handleCredentialResponse(response) {
-            fetch('/tokensignin', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: response.credential })
-            })
-            .then(r => r.json())
-            .then(user => {
-                console.log('Usuário logado:', user);
-                window.location.href = 'dashboard.html';
-            })
-            .catch(() => alert('Falha na autenticação Google'));
-        }
+  async function handleCredentialResponse(response) {
+    const token = response.credential;
 
-        window.onload = function() {
-            google.accounts.id.initialize({
-                client_id: '387015858940-4vvdsandi9n2m8f36hak53j2emki2dfg.apps.googleusercontent.com',
-                callback: handleCredentialResponse
-            });
-            google.accounts.id.renderButton(
-                document.getElementById('googleButton'),
-                { theme: 'outline', size: 'large' }
-            );
-        };
-    </script>
+    const resultado = await fetch('/tokensignin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    });
+
+    const data = await resultado.json();
+
+    if (resultado.ok) {
+      if (data.primeiro_acesso) {
+        // Redireciona para o formulário de cadastro no primeiro acesso
+        window.location.href = '/formulario.html';
+      } else {
+        // Redireciona para o painel nos acessos seguintes
+        window.location.href = '/painel.html';
+      }
+    } else {
+      alert('Falha no login');
+    }
+  }
+
+  window.onload = function () {
+    google.accounts.id.initialize({
+      client_id: '387015858940-4vvdsandi9n2m8f36hak53j2emki2dfg.apps.googleusercontent.com',
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("google-signin"),
+      { theme: "outline", size: "large" }
+    );
+  };
+</script>
+
 </body>
 </html>

@@ -120,3 +120,55 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servidor rodando em http://0.0.0.0:${PORT}`);
 });
+
+
+// Em server.js, abaixo das outras rotas:
+
+// Rota que recebe os dados do formulário
+app.post('/finalizar-cadastro', isLoggedIn, async (req, res) => {
+  const { nomeAluno, idade, turma } = req.body;
+  const googleId = req.session.user.googleId;
+
+  try {
+    // Atualiza o usuário para não ser mais primeiro acesso
+    await pool.query(
+      'UPDATE usuarios SET primeiro_acesso = FALSE WHERE google_id = $1',
+      [googleId]
+    );
+
+    // Insere o aluno vinculado ao usuário
+    await pool.query(
+      `INSERT INTO alunos (id_usuario, nome, idade, turma)
+       VALUES (
+         (SELECT id FROM usuarios WHERE google_id = $1),
+         $2, $3, $4
+       )`,
+      [googleId, nomeAluno, idade, turma]
+    );
+
+    // Redireciona para o painel
+    res.redirect('/painel.html');
+  } catch (err) {
+    console.error('Erro ao finalizar cadastro:', err);
+    res.status(500).send('Erro interno');
+  }
+});
+
+
+// Cadastro de alunos
+app.post('/alunos', isLoggedIn, async (req, res) => {
+  const { nome, idade, turma } = req.body;
+  const usuario = req.session.user;
+
+  try {
+    await pool.query(
+      'INSERT INTO alunos (id_usuario, nome, idade, turma) VALUES ($1, $2, $3, $4)',
+      [usuario.id, nome, idade, turma]
+    );
+
+    res.status(201).json({ message: 'Aluno cadastrado com sucesso' });
+  } catch (err) {
+    console.error('Erro ao cadastrar aluno:', err);
+    res.status(500).json({ error: 'Erro interno ao cadastrar aluno' });
+  }
+});

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Aluno - RFC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">Cadastro de Aluno</h1>
+
+    <form id="formCadastro" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nome do Aluno</label>
+        <input type="text" id="nome" name="nome" required class="mt-1 p-2 w-full border rounded"/>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Idade</label>
+        <input type="number" id="idade" name="idade" required class="mt-1 p-2 w-full border rounded"/>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Turma</label>
+        <input type="text" id="turma" name="turma" required class="mt-1 p-2 w-full border rounded"/>
+      </div>
+
+      <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Cadastrar</button>
+    </form>
+
+    <p id="mensagem" class="text-center mt-4 text-green-600 font-medium hidden">Aluno cadastrado com sucesso!</p>
+  </div>
+
+  <script>
+    document.getElementById('formCadastro').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value;
+      const idade = document.getElementById('idade').value;
+      const turma = document.getElementById('turma').value;
+
+      const resposta = await fetch('/alunos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nome, idade, turma })
+      });
+
+      if (resposta.ok) {
+        document.getElementById('mensagem').classList.remove('hidden');
+        document.getElementById('formCadastro').reset();
+      } else {
+        alert('Erro ao cadastrar aluno.');
+      }
+    });
+  </script>
+</body>
+</html>
