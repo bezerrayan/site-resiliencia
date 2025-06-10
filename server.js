@@ -9,6 +9,9 @@ const pool = require('./db'); // Pool do PostgreSQL
 
 require('dotenv').config();
 
+console.log('▶️ [server.js] DATABASE_URL =', process.env.DATABASE_URL);
+
+
 const app = express();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
