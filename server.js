@@ -115,6 +115,18 @@ app.post('/send-email', (req, res) => {
   // Seu código para envio
 });
 
+// Rota de teste para listar TODOS os alunos — sem isLoggedIn
+app.get('/alunos-teste', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM alunos ORDER BY id');
+    return res.json(result.rows);
+  } catch (err) {
+    console.error('Erro em /alunos-teste:', err);
+    return res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+
 // Inicia servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
