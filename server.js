@@ -115,13 +115,28 @@ app.post('/send-email', (req, res) => {
   // Seu código para envio
 });
 
-// Rota de teste para listar TODOS os alunos — sem isLoggedIn
-app.get('/alunos-teste', async (req, res) => {
+// Rota para obter os dados do responsável + alunos
+app.get('/me', isLoggedIn, async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM alunos ORDER BY id');
-    return res.json(result.rows);
+    const { googleId } = req.session.user;
+
+    // Busca o responsável
+    const userRes = await pool.query(
+      'SELECT id, nome, email FROM usuarios WHERE google_id = $1',
+      [googleId]
+    );
+    const user = userRes.rows[0];
+
+    // Busca os alunos vinculados
+    const alunosRes = await pool.query(
+      'SELECT id, nome, idade, turma FROM alunos WHERE id_usuario = $1 ORDER BY id',
+      [user.id]
+    );
+    const alunos = alunosRes.rows;
+
+    return res.json({ user, alunos });
   } catch (err) {
-    console.error('Erro em /alunos-teste:', err);
+    console.error('Erro em /me:', err);
     return res.status(500).json({ error: 'Erro interno' });
   }
 });
@@ -136,33 +151,52 @@ app.listen(PORT, '0.0.0.0', () => {
 
 // Em server.js, abaixo das outras rotas:
 
-// Rota que recebe os dados do formulário
 app.post('/finalizar-cadastro', isLoggedIn, async (req, res) => {
-  const { nomeAluno, idade, turma } = req.body;
+  const {
+    nomeResponsavel,
+    emailResponsavel,
+    telefone,
+    endereco,
+    nomeAluno,
+    idadeAluno,
+    turmaAluno
+  } = req.body;
+
   const googleId = req.session.user.googleId;
 
   try {
-    // Atualiza o usuário para não ser mais primeiro acesso
-    await pool.query(
-      'UPDATE usuarios SET primeiro_acesso = FALSE WHERE google_id = $1',
-      [googleId]
-    );
+    // 1) Atualiza dados do responsável
+    const updateUser = `
+      UPDATE usuarios
+      SET nome = $1,
+          email = $2,
+          telefone = $3,
+          endereco = $4,
+          primeiro_acesso = FALSE
+      WHERE google_id = $5
+      RETURNING id
+    `;
+    const userRes = await pool.query(updateUser, [
+      nomeResponsavel,
+      emailResponsavel,
+      telefone,
+      endereco,
+      googleId
+    ]);
+    const userId = userRes.rows[0].id;
 
-    // Insere o aluno vinculado ao usuário
+    // 2) Insere o aluno vinculado
     await pool.query(
       `INSERT INTO alunos (id_usuario, nome, idade, turma)
-       VALUES (
-         (SELECT id FROM usuarios WHERE google_id = $1),
-         $2, $3, $4
-       )`,
-      [googleId, nomeAluno, idade, turma]
+       VALUES ($1, $2, $3, $4)`,
+      [userId, nomeAluno, idadeAluno, turmaAluno]
     );
 
-    // Redireciona para o painel
-    res.redirect('/painel.html');
+    // 3) Retorna sucesso
+    res.json({ success: true });
   } catch (err) {
     console.error('Erro ao finalizar cadastro:', err);
-    res.status(500).send('Erro interno');
+    res.status(500).json({ error: 'Erro interno ao finalizar cadastro' });
   }
 });
 

@@ -1,58 +1,88 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cadastro de Aluno - RFC</title>
+  <title>Cadastro Inicial - RFC</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-6 text-center">Cadastro de Aluno</h1>
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-lg">
+    <h1 class="text-2xl font-bold mb-6 text-center">Cadastro Inicial</h1>
 
     <form id="formCadastro" class="space-y-4">
+      <!-- Dados do Responsável -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Nome do Aluno</label>
-        <input type="text" id="nome" name="nome" required class="mt-1 p-2 w-full border rounded"/>
+        <label class="block text-sm font-medium">Nome do Responsável</label>
+        <input type="text" name="nomeResponsavel" required
+               class="w-full mt-1 p-2 border rounded"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">E-mail</label>
+        <input type="email" name="emailResponsavel" required
+               class="w-full mt-1 p-2 border rounded"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Telefone</label>
+        <input type="tel" name="telefone" required
+               class="w-full mt-1 p-2 border rounded"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Endereço</label>
+        <input type="text" name="endereco" required
+               class="w-full mt-1 p-2 border rounded"/>
       </div>
 
+      <hr class="my-6"/>
+
+      <!-- Dados do Aluno -->
       <div>
-        <label class="block text-sm font-medium text-gray-700">Idade</label>
-        <input type="number" id="idade" name="idade" required class="mt-1 p-2 w-full border rounded"/>
+        <label class="block text-sm font-medium">Nome do Filho</label>
+        <input type="text" name="nomeAluno" required
+               class="w-full mt-1 p-2 border rounded"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Idade</label>
+        <input type="number" name="idadeAluno" required
+               class="w-full mt-1 p-2 border rounded"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Turma / Categoria</label>
+        <input type="text" name="turmaAluno" required
+               class="w-full mt-1 p-2 border rounded"/>
       </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Turma</label>
-        <input type="text" id="turma" name="turma" required class="mt-1 p-2 w-full border rounded"/>
-      </div>
-
-      <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Cadastrar</button>
+      <button type="submit"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+        Finalizar Cadastro
+      </button>
     </form>
 
-    <p id="mensagem" class="text-center mt-4 text-green-600 font-medium hidden">Aluno cadastrado com sucesso!</p>
+    <p id="mensagem-sucesso"
+       class="mt-4 text-green-600 font-semibold text-center hidden">
+      Cadastro concluído! Redirecionando...
+    </p>
   </div>
 
   <script>
-    document.getElementById('formCadastro').addEventListener('submit', async function (e) {
+    document.getElementById('formCadastro')
+      .addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const nome = document.getElementById('nome').value;
-      const idade = document.getElementById('idade').value;
-      const turma = document.getElementById('turma').value;
+      const data = Object.fromEntries(new FormData(this).entries());
 
-      const resposta = await fetch('/alunos', {
+      const res = await fetch('/finalizar-cadastro', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ nome, idade, turma })
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(data)
       });
 
-      if (resposta.ok) {
-        document.getElementById('mensagem').classList.remove('hidden');
-        document.getElementById('formCadastro').reset();
+      if (res.ok) {
+        document.getElementById('mensagem-sucesso').classList.remove('hidden');
+        setTimeout(() => window.location.href = '/dashboard.html', 1500);
       } else {
-        alert('Erro ao cadastrar aluno.');
+        const err = await res.json();
+        alert(err.error || 'Erro ao finalizar cadastro.');
       }
     });
   </script>

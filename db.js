@@ -22,6 +22,13 @@ async function criarTabelas() {
       primeiro_acesso BOOLEAN DEFAULT TRUE
     )
   `);
+  // logo depois do CREATE TABLE usuarios
+await pool.query(`
+  ALTER TABLE usuarios
+  ADD COLUMN IF NOT EXISTS telefone TEXT,
+  ADD COLUMN IF NOT EXISTS endereco TEXT;
+`);
+
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS alunos (
