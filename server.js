@@ -153,53 +153,54 @@ app.listen(PORT, '0.0.0.0', () => {
 
 app.post('/finalizar-cadastro', isLoggedIn, async (req, res) => {
   console.log('[/finalizar-cadastro] body:', req.body);
+
   const {
     nomeResponsavel,
-    emailResponsavel,
+    // emailResponsavel,   // removido
     telefone,
     endereco,
     nomeAluno,
     idadeAluno,
     turmaAluno
   } = req.body;
-
   const googleId = req.session.user.googleId;
 
   try {
-    // 1) Atualiza dados do responsável
-    const updateUser = `
-      UPDATE usuarios
-      SET nome = $1,
-          email = $2,
-          telefone = $3,
-          endereco = $4,
-          primeiro_acesso = FALSE
-      WHERE google_id = $5
-      RETURNING id
-    `;
-    const userRes = await pool.query(updateUser, [
-      nomeResponsavel,
-      emailResponsavel,
-      telefone,
-      endereco,
-      googleId
-    ]);
+    // 1) Busca o id do usuário pelo google_id
+    const userRes = await pool.query(
+      'SELECT id FROM usuarios WHERE google_id = $1',
+      [googleId]
+    );
+    if (userRes.rows.length === 0) {
+      return res.status(400).json({ error: 'Usuário não encontrado' });
+    }
     const userId = userRes.rows[0].id;
 
-    // 2) Insere o aluno vinculado
+    // 2) Atualiza apenas os campos necessários, sem tocar no email
+    await pool.query(
+      `UPDATE usuarios
+         SET nome = $1,
+             telefone = $2,
+             endereco = $3,
+             primeiro_acesso = FALSE
+       WHERE id = $4`,
+      [nomeResponsavel.trim(), telefone.trim(), endereco.trim(), userId]
+    );
+
+    // 3) Insere o aluno vinculado
     await pool.query(
       `INSERT INTO alunos (id_usuario, nome, idade, turma)
        VALUES ($1, $2, $3, $4)`,
-      [userId, nomeAluno, idadeAluno, turmaAluno]
+      [userId, nomeAluno.trim(), parseInt(idadeAluno, 10), turmaAluno.trim()]
     );
 
-    // 3) Retorna sucesso
-    res.json({ success: true });
+    return res.json({ success: true });
   } catch (err) {
-    console.error('Erro ao finalizar cadastro:', err);
-    res.status(500).json({ error: 'Erro interno ao finalizar cadastro' });
+    console.error('[/finalizar-cadastro] erro interno:', err.stack);
+    return res.status(500).json({ error: 'Erro interno ao finalizar cadastro' });
   }
 });
+
 
 
 // Cadastro de alunos
