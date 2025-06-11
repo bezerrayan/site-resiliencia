@@ -258,45 +258,38 @@
     }
 
     // Aqui começa a parte que preenche a UI
-    const { user, alunos } = await res.json();
-
+     const { user, alunos } = await res.json();
+     
     // Preenche nome do responsável
     document.getElementById('boas-vindas').textContent =
       `Bem-vindo(a), ${user.nome}!`;
 
-    // Preenche lista de filhos
-    const infoElem = document.getElementById('responsavel-info');
-    if (alunos.length > 0) {
-      const nomesFilhos = alunos.map(a => a.nome).join(', ');
-      infoElem.textContent = `Responsável por: ${nomesFilhos}`;
-    } else {
-      infoElem.textContent = 'Você ainda não cadastrou nenhum aluno.';
-    }
+// Preenche lista de filhos
+const infoElem = document.getElementById('responsavel-info');
+if (alunos.length > 0) {
+  const nomesFilhos = alunos.map(a => a.nome).join(', ');
+  infoElem.textContent = `Responsável por: ${nomesFilhos}`;
+} else {
+  infoElem.textContent = 'Você ainda não cadastrou nenhum aluno.';
+}
 
-    // Renderiza os cards de aluno
-    const grid = document.getElementById('lista-alunos');
-    if (alunos.length === 0) {
-      grid.innerHTML = '<p>Você ainda não cadastrou nenhum aluno.</p>';
-    } else {
-      grid.innerHTML = alunos.map(a => `
-        <div class="dashboard-card">
-          <h2>${a.nome}</h2>
-          <p>Idade: ${a.idade}</p>
-          <p>Turma: ${a.turma}</p>
-        </div>
-      `).join('');
-    }
+// Renderiza os cards de aluno
+const grid = document.getElementById('lista-alunos');
+if (alunos.length === 0) {
+  grid.innerHTML = '<p>Você ainda não cadastrou nenhum aluno.</p>';
+} else {
+  grid.innerHTML = alunos.map(a => `
+    <div class="dashboard-card">
+      <h2>${a.nome}</h2>
+      <p>Idade: ${a.idade}</p>
+      <p>Turma: ${a.turma}</p>
+    </div>
+  `).join('');
+}
+
   }
 
   window.addEventListener('DOMContentLoaded', carregarDashboard);
-
-  grid.innerHTML = alunos.map(a => `
-  <div class="dashboard-card">
-    <h2>${a.nome}</h2>
-    <p>Idade: ${a.idade}</p>
-    <p>Turma: ${a.turma}</p>
-  </div>
-`).join('');
 
 </script>
 
