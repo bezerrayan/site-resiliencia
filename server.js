@@ -141,6 +141,49 @@ app.get('/me', isLoggedIn, async (req, res) => {
   }
 });
 
+// --- ROTAS DE NOTÍCIAS PÚBLICAS ---
+app.get('/noticias', async (req, res) => {
+  const { rows } = await pool.query(
+    'SELECT id, titulo, corpo, imagem_url, criado_em FROM noticias ORDER BY criado_em DESC'
+  );
+  res.json(rows);
+});
+
+// --- ROTAS DE ADMIN (PROTEGIDAS) ---
+app.use('/admin/noticias', isAdmin);
+
+// Listagem total
+app.get('/admin/noticias', async (req, res) => {
+  const { rows } = await pool.query('SELECT * FROM noticias ORDER BY criado_em DESC');
+  res.json(rows);
+});
+
+// Criação
+app.post('/admin/noticias', async (req, res) => {
+  const { titulo, corpo, imagem_url } = req.body;
+  await pool.query(
+    'INSERT INTO noticias (titulo, corpo, imagem_url) VALUES ($1,$2,$3)',
+    [titulo, corpo, imagem_url || null]
+  );
+  res.json({ success: true });
+});
+
+// Edição
+app.put('/admin/noticias/:id', async (req, res) => {
+  const { titulo, corpo, imagem_url } = req.body;
+  await pool.query(
+    'UPDATE noticias SET titulo=$1, corpo=$2, imagem_url=$3 WHERE id=$4',
+    [titulo, corpo, imagem_url || null, req.params.id]
+  );
+  res.json({ success: true });
+});
+
+// Exclusão
+app.delete('/admin/noticias/:id', async (req, res) => {
+  await pool.query('DELETE FROM noticias WHERE id=$1', [req.params.id]);
+  res.json({ success: true });
+});
+
 
 // Inicia servidor
 const PORT = process.env.PORT || 3000;
@@ -242,3 +285,12 @@ app.get('/alunos', isLoggedIn, async (req, res) => {
     res.status(500).json({ error: 'Erro interno' });
   }
 });
+
+function isAdmin(req, res, next) {
+  if (!req.session.user) return res.status(401).send('Não autenticado');
+  // Exemplo: só quem for esse e-mail é admin
+  if (req.session.user.email !== 'dono@escolinha.com') {
+    return res.status(403).send('Acesso negado');
+  }
+  next();
+}

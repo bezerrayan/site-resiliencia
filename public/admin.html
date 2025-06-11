@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Administração - Resiliência FC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-3xl font-bold mb-4">Painel de Notícias (Admin)</h1>
+
+  <!-- Formulário de criação/edição -->
+  <form id="formNoticia" class="bg-white p-4 rounded shadow mb-6 space-y-4">
+    <input type="hidden" id="noticiaId"/>
+    <div>
+      <label class="block">Título</label>
+      <input id="titulo" type="text" class="w-full border p-2 rounded" required/>
+    </div>
+    <div>
+      <label class="block">Corpo</label>
+      <textarea id="corpo" class="w-full border p-2 rounded" rows="4" required></textarea>
+    </div>
+    <div>
+      <label class="block">URL da Imagem (opcional)</label>
+      <input id="imagem_url" type="url" class="w-full border p-2 rounded"/>
+    </div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+      <span id="btnText">Criar Notícia</span>
+    </button>
+    <button type="button" id="btnCancel" class="ml-2 bg-gray-300 px-4 py-2 rounded hidden">
+      Cancelar
+    </button>
+  </form>
+
+  <!-- Lista de notícias -->
+  <div id="listaNoticias" class="space-y-4"></div>
+
+  <script>
+    const lista = document.getElementById('listaNoticias');
+    const form = document.getElementById('formNoticia');
+    const btnText = document.getElementById('btnText');
+    const btnCancel = document.getElementById('btnCancel');
+
+    // Função para carregar notícias no admin
+    async function carregarNoticias() {
+      const res = await fetch('/admin/noticias');
+      const news = await res.json();
+      lista.innerHTML = news.map(n => `
+        <div class="bg-white p-4 rounded shadow flex justify-between items-start">
+          <div>
+            <h2 class="font-semibold">${n.titulo}</h2>
+            <p class="text-sm text-gray-600">${new Date(n.criado_em).toLocaleString()}</p>
+            <p class="mt-2">${n.corpo}</p>
+            ${n.imagem_url ? `<img src="${n.imagem_url}" class="mt-2 max-h-40"/>` : ''}
+          </div>
+          <div class="space-y-2 text-right">
+            <button onclick="editar(${n.id})" class="text-blue-600">Editar</button>
+            <button onclick="excluir(${n.id})" class="text-red-600">Excluir</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Cria ou atualiza notícia
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const id = document.getElementById('noticiaId').value;
+      const payload = {
+        titulo: document.getElementById('titulo').value,
+        corpo: document.getElementById('corpo').value,
+        imagem_url: document.getElementById('imagem_url').value
+      };
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `/admin/noticias/${id}` : '/admin/noticias';
+      await fetch(url, {
+        method,
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      form.reset();
+      btnText.textContent = 'Criar Notícia';
+      btnCancel.classList.add('hidden');
+      carregarNoticias();
+    });
+
+    // Preenche o form para edição
+    function editar(id) {
+      fetch(`/admin/noticias`)
+        .then(r => r.json())
+        .then(news => {
+          const n = news.find(x => x.id === id);
+          document.getElementById('noticiaId').value = n.id;
+          document.getElementById('titulo').value = n.titulo;
+          document.getElementById('corpo').value = n.corpo;
+          document.getElementById('imagem_url').value = n.imagem_url || '';
+          btnText.textContent = 'Atualizar Notícia';
+          btnCancel.classList.remove('hidden');
+        });
+    }
+
+    // Cancela edição
+    btnCancel.addEventListener('click', () => {
+      form.reset();
+      btnText.textContent = 'Criar Notícia';
+      btnCancel.classList.add('hidden');
+    });
+
+    // Exclui
+    async function excluir(id) {
+      if (!confirm('Confirma exclusão?')) return;
+      await fetch(`/admin/noticias/${id}`, { method: 'DELETE' });
+      carregarNoticias();
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', carregarNoticias);
+  </script>
+</body>
+</html>

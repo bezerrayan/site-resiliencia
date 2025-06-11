@@ -51,10 +51,24 @@ await pool.query(`
       id_transacao_mp TEXT
     )
   `);
+  
+  // Cria tabela de notícias
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS noticias (
+    id SERIAL PRIMARY KEY,
+    titulo TEXT NOT NULL,
+    corpo TEXT NOT NULL,
+    imagem_url TEXT,
+    criado_em TIMESTAMP DEFAULT NOW()
+  )
+`);
+
 }
+
 
 criarTabelas()
   .then(() => console.log('Tabelas verificadas e criadas (se necessário)'))
   .catch(err => console.error('Erro ao criar tabelas:', err));
 
 module.exports = pool;
+
