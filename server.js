@@ -289,7 +289,7 @@ app.get('/alunos', isLoggedIn, async (req, res) => {
 function isAdmin(req, res, next) {
   if (!req.session.user) return res.status(401).send('Não autenticado');
   // Exemplo: só quem for esse e-mail é admin
-  if (req.session.user.email !== 'dono@escolinha.com') {
+  if (req.session.user.email !== 'bezerrayan651@gmail.com') {
     return res.status(403).send('Acesso negado');
   }
   next();
