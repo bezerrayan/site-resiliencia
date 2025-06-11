@@ -53,14 +53,18 @@
     <main class="container">
         <section class="dashboard-section">
             <div class="dashboard-header">
-                <div class="user-info">
-                    <h1>Bem-vindo(a), Yan Bezerra</h1>
-                    <p>Responsável por: Antonio Tomáz  (Sub-10)</p>
-                </div>
-                <button class="btn-logout">Sair</button>
-            </div>
+  <div class="user-info">
+    <h1 id="boas-vindas">Bem-vindo(a),</h1>
+    <p id="responsavel-info"></p>
+  </div>
+  <button class="btn-logout">Sair</button>
+</div>
 
-            <div class="dashboard-grid">
+
+       <div id="lista-alunos" class="dashboard-grid">
+  <!-- cards serão injetados aqui -->
+</div>
+
                 <!-- Status da Mensalidade -->
                 <div class="dashboard-card">
                     <div class="card-header">
@@ -232,5 +236,34 @@
             // Aqui você pode adicionar a lógica de redirecionamento para o sistema de pagamento
         });
     </script>
+
+   <script>
+  async function carregarDashboard() {
+    let res;
+    try {
+      res = await fetch('/me');
+    } catch (networkErr) {
+      console.error('Falha de rede ao chamar /me:', networkErr);
+      return; // ou exiba uma mensagem de erro em tela
+    }
+
+    if (res.status === 401) {
+      console.warn('Usuário não autenticado, redirecionando ao login');
+      return window.location.href = '/login.html';
+    }
+
+    if (!res.ok) {
+      console.error('Erro inesperado ao chamar /me:', res.status, await res.text());
+      return; // ou trate como preferir
+    }
+
+    const { user, alunos } = await res.json();
+    // ... resto da lógica que preenche a UI ...
+  }
+
+  window.addEventListener('DOMContentLoaded', carregarDashboard);
+</script>
+
+
 </body>
 </html>

@@ -152,6 +152,7 @@ app.listen(PORT, '0.0.0.0', () => {
 // Em server.js, abaixo das outras rotas:
 
 app.post('/finalizar-cadastro', isLoggedIn, async (req, res) => {
+  console.log('[/finalizar-cadastro] body:', req.body);
   const {
     nomeResponsavel,
     emailResponsavel,
