@@ -11,8 +11,9 @@ def compracerta():
     return render_template("compracerta.html")
 
 @app.route("/compraerrada")
-def compraerrada():  # nome corrigido aqui
+def compraerrada():
     return render_template("compraerrada.html")
+
 
 if __name__ == "__main__":  # condição corrigida aqui
     app.run(debug=True)

@@ -8,22 +8,15 @@ request_options.custom_headers = {
 }
 
 payment_data = {
-    "items": [
-        {
-            "id": "1",
-            "title": "Mensalidade Básico",
-            "quantity": 1,
-            "currency_id": "BRL",
-            "unit_price": 100
-        }
-    ],
+    "items": [...],
     "back_urls": {
-        "success": "https://meusite.onrender.com/compracerta",  # URL pública do Render
-        "failure": "https://meusite.onrender.com/compraerrada",
-        "pending": "https://meusite.onrender.com/compraerrada"
+        "success": "https://site-resiliencia.onrender.com/compracerta",  # sem .html
+        "failure": "https://site-resiliencia.onrender.com/compraerrada",
+        "pending": "https://site-resiliencia.onrender.com/compraerrada"
     },
     "auto_return": "all"
 }
+
 
 
 
