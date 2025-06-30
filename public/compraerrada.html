@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pagamento Falhou</title>
+  <style>
+    body {
+      background: #ffebee;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .card h1 {
+      color: #c62828;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #e53935;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card a {
+      text-decoration: none;
+      background-color: #c62828;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    .card a:hover {
+      background-color: #8e0000;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>❌ Pagamento Não Concluído</h1>
+    <p>Houve um erro ao processar seu pagamento. Tente novamente.</p>
+    <a href="dashboard.html">Tentar Novamente</a>
+  </div>
+</body>
+</html>
