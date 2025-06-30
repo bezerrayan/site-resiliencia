@@ -295,6 +295,28 @@ if (alunos.length === 0) {
 
 </script>
 
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+  const mp = new MercadoPago('TEST-4605221992814720-062922-b7b2b02cc9cfbb4cc031134996f51839-1255530696', {
+    locale: 'pt-BR'
+  });
+
+  async function pagarMensalidade() {
+    const res = await fetch('/pagar-preferencia');
+    const data = await res.json();
+
+    mp.checkout({
+      preference: {
+        id: data.id
+      },
+      autoOpen: true // Abre automaticamente o checkout
+    });
+  }
+
+  document.querySelector('.btn-pagar').addEventListener('click', pagarMensalidade);
+</script>
+
+
 
 
 </body>
