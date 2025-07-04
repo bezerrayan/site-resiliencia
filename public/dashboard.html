@@ -302,15 +302,25 @@ if (alunos.length === 0) {
   });
 
   async function pagarMensalidade() {
-    const res = await fetch('/pagar-preferencia');
-    const data = await res.json();
+    try {
+      const res = await fetch('/pagar-preferencia');
+      const data = await res.json();
 
-    mp.checkout({
-      preference: {
-        id: data.id
-      },
-      autoOpen: true // Abre automaticamente o checkout
-    });
+      if (!data.id) {
+        throw new Error('ID de preferência não retornado');
+      }
+
+      mp.checkout({
+        preference: {
+          id: data.id
+        },
+        autoOpen: true // Abre automaticamente o checkout
+      });
+
+    } catch (err) {
+      alert('Erro ao iniciar pagamento. Tente novamente mais tarde.');
+      console.error('Erro ao iniciar checkout:', err);
+    }
   }
 
   document.querySelector('.btn-pagar').addEventListener('click', pagarMensalidade);

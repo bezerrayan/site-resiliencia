@@ -1,31 +1,56 @@
-// app.js
 const express = require('express');
 const { OAuth2Client } = require('google-auth-library');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const path = require('path');
-const pool = require('./db'); // Pool do PostgreSQL
+const cors = require('cors');
+const mercadopago = require('mercadopago');
+const pool = require('./db');
 
 require('dotenv').config();
 
 console.log('▶️ [server.js] DATABASE_URL =', process.env.DATABASE_URL);
 
-
 const app = express();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+// Configuração do Mercado Pago
+mercadopago.configure({
+  access_token: process.env.MERCADO_PAGO_ACCESS_TOKEN
+});
+
 // Middlewares
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET || 'segredo',
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 horas
+  }
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rota para verificar ID token do Google, salvar/atualizar usuário e controlar primeiro acesso
+// Middleware para proteger rotas
+function isLoggedIn(req, res, next) {
+  if (req.session.user) return next();
+  res.redirect('/');
+}
+
+// Middleware para verificar se é admin
+function isAdmin(req, res, next) {
+  if (!req.session.user) return res.status(401).send('Não autenticado');
+  if (req.session.user.email !== 'bezerrayan651@gmail.com') {
+    return res.status(403).send('Acesso negado');
+  }
+  next();
+}
+
+// Rota para verificar ID token do Google
 app.post('/tokensignin', async (req, res) => {
   const { token } = req.body;
 
@@ -36,7 +61,6 @@ app.post('/tokensignin', async (req, res) => {
     });
 
     const payload = ticket.getPayload();
-
     const googleId = payload.sub;
     const nome = payload.name;
     const email = payload.email;
@@ -48,7 +72,7 @@ app.post('/tokensignin', async (req, res) => {
     );
 
     if (userResult.rows.length === 0) {
-      // Usuário não existe, cria um novo com primeiro_acesso = true
+      // Usuário não existe, cria um novo
       await pool.query(
         `INSERT INTO usuarios (google_id, nome, email, primeiro_acesso)
          VALUES ($1, $2, $3, TRUE)`,
@@ -80,11 +104,15 @@ app.post('/tokensignin', async (req, res) => {
   }
 });
 
-// Middleware para proteger rotas
-function isLoggedIn(req, res, next) {
-  if (req.session.user) return next();
-  res.redirect('/');
-}
+// Rota de logout
+app.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Erro ao fazer logout' });
+    }
+    res.json({ success: true });
+  });
+});
 
 // Página do painel só para usuários logados
 app.get('/painel.html', isLoggedIn, (req, res) => {
@@ -96,7 +124,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-// Rota pra listar usuários (teste)
+// Rota para listar usuários (teste)
 app.get('/usuarios', isLoggedIn, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM usuarios');
@@ -107,14 +135,6 @@ app.get('/usuarios', isLoggedIn, async (req, res) => {
   }
 });
 
-// Nodemailer (placeholder, adicione sua config)
-const transporter = nodemailer.createTransport({
-  // Seu setup aqui
-});
-app.post('/send-email', (req, res) => {
-  // Seu código para envio
-});
-
 // Rota para obter os dados do responsável + alunos
 app.get('/me', isLoggedIn, async (req, res) => {
   try {
@@ -122,7 +142,7 @@ app.get('/me', isLoggedIn, async (req, res) => {
 
     // Busca o responsável
     const userRes = await pool.query(
-      'SELECT id, nome, email FROM usuarios WHERE google_id = $1',
+      'SELECT id, nome, email, telefone, endereco FROM usuarios WHERE google_id = $1',
       [googleId]
     );
     const user = userRes.rows[0];
@@ -141,65 +161,12 @@ app.get('/me', isLoggedIn, async (req, res) => {
   }
 });
 
-// --- ROTAS DE NOTÍCIAS PÚBLICAS ---
-app.get('/noticias', async (req, res) => {
-  const { rows } = await pool.query(
-    'SELECT id, titulo, corpo, imagem_url, criado_em FROM noticias ORDER BY criado_em DESC'
-  );
-  res.json(rows);
-});
-
-// --- ROTAS DE ADMIN (PROTEGIDAS) ---
-app.use('/admin/noticias', isAdmin);
-
-// Listagem total
-app.get('/admin/noticias', async (req, res) => {
-  const { rows } = await pool.query('SELECT * FROM noticias ORDER BY criado_em DESC');
-  res.json(rows);
-});
-
-// Criação
-app.post('/admin/noticias', async (req, res) => {
-  const { titulo, corpo, imagem_url } = req.body;
-  await pool.query(
-    'INSERT INTO noticias (titulo, corpo, imagem_url) VALUES ($1,$2,$3)',
-    [titulo, corpo, imagem_url || null]
-  );
-  res.json({ success: true });
-});
-
-// Edição
-app.put('/admin/noticias/:id', async (req, res) => {
-  const { titulo, corpo, imagem_url } = req.body;
-  await pool.query(
-    'UPDATE noticias SET titulo=$1, corpo=$2, imagem_url=$3 WHERE id=$4',
-    [titulo, corpo, imagem_url || null, req.params.id]
-  );
-  res.json({ success: true });
-});
-
-// Exclusão
-app.delete('/admin/noticias/:id', async (req, res) => {
-  await pool.query('DELETE FROM noticias WHERE id=$1', [req.params.id]);
-  res.json({ success: true });
-});
-
-
-// Inicia servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Servidor rodando em http://0.0.0.0:${PORT}`);
-});
-
-
-// Em server.js, abaixo das outras rotas:
-
+// Finalizar cadastro
 app.post('/finalizar-cadastro', isLoggedIn, async (req, res) => {
   console.log('[/finalizar-cadastro] body:', req.body);
 
   const {
     nomeResponsavel,
-    // emailResponsavel,   // removido
     telefone,
     endereco,
     nomeAluno,
@@ -219,7 +186,7 @@ app.post('/finalizar-cadastro', isLoggedIn, async (req, res) => {
     }
     const userId = userRes.rows[0].id;
 
-    // 2) Atualiza apenas os campos necessários, sem tocar no email
+    // 2) Atualiza os dados do usuário
     await pool.query(
       `UPDATE usuarios
          SET nome = $1,
@@ -244,17 +211,25 @@ app.post('/finalizar-cadastro', isLoggedIn, async (req, res) => {
   }
 });
 
-
-
 // Cadastro de alunos
 app.post('/alunos', isLoggedIn, async (req, res) => {
   const { nome, idade, turma } = req.body;
-  const usuario = req.session.user;
+  const googleId = req.session.user.googleId;
 
   try {
+    // Busca o id do usuário
+    const userRes = await pool.query(
+      'SELECT id FROM usuarios WHERE google_id = $1',
+      [googleId]
+    );
+    
+    if (userRes.rows.length === 0) {
+      return res.status(400).json({ error: 'Usuário não encontrado' });
+    }
+
     await pool.query(
       'INSERT INTO alunos (id_usuario, nome, idade, turma) VALUES ($1, $2, $3, $4)',
-      [usuario.id, nome, idade, turma]
+      [userRes.rows[0].id, nome, idade, turma]
     );
 
     res.status(201).json({ message: 'Aluno cadastrado com sucesso' });
@@ -263,7 +238,6 @@ app.post('/alunos', isLoggedIn, async (req, res) => {
     res.status(500).json({ error: 'Erro interno ao cadastrar aluno' });
   }
 });
-
 
 // Rota para listar todos os alunos (somente usuários logados)
 app.get('/alunos', isLoggedIn, async (req, res) => {
@@ -286,11 +260,252 @@ app.get('/alunos', isLoggedIn, async (req, res) => {
   }
 });
 
-function isAdmin(req, res, next) {
-  if (!req.session.user) return res.status(401).send('Não autenticado');
-  // Exemplo: só quem for esse e-mail é admin
-  if (req.session.user.email !== 'bezerrayan651@gmail.com') {
-    return res.status(403).send('Acesso negado');
+// ===== API DO MERCADO PAGO =====
+
+// Criar preferência de pagamento
+app.post('/api/pagamentos/criar-preferencia', isLoggedIn, async (req, res) => {
+  try {
+    const { valor, descricao, id_aluno } = req.body;
+    const googleId = req.session.user.googleId;
+
+    // Busca o id do usuário
+    const userRes = await pool.query(
+      'SELECT id FROM usuarios WHERE google_id = $1',
+      [googleId]
+    );
+    
+    if (userRes.rows.length === 0) {
+      return res.status(400).json({ error: 'Usuário não encontrado' });
+    }
+
+    const userId = userRes.rows[0].id;
+
+    // Cria a preferência no Mercado Pago
+    const preference = {
+      items: [
+        {
+          title: descricao || 'Mensalidade - Resiliência F.C',
+          quantity: 1,
+          currency_id: 'BRL',
+          unit_price: parseFloat(valor)
+        }
+      ],
+      payer: {
+        name: req.session.user.nome,
+        email: req.session.user.email
+      },
+      back_urls: {
+        success: `${req.protocol}://${req.get('host')}/compracerta.html`,
+        failure: `${req.protocol}://${req.get('host')}/compraerrada.html`,
+        pending: `${req.protocol}://${req.get('host')}/compraerrada.html`
+      },
+      auto_return: 'approved',
+      external_reference: `${userId}_${id_aluno}_${Date.now()}`,
+      notification_url: `${req.protocol}://${req.get('host')}/api/pagamentos/webhook`
+    };
+
+    const response = await mercadopago.preferences.create(preference);
+
+    // Salva o pagamento no banco
+    await pool.query(
+      `INSERT INTO pagamentos (id_usuario, id_aluno, valor, status, id_transacao_mp)
+       VALUES ($1, $2, $3, 'pending', $4)`,
+      [userId, id_aluno, valor, response.body.id]
+    );
+
+    res.json({ 
+      preference_id: response.body.id,
+      init_point: response.body.init_point
+    });
+
+  } catch (error) {
+    console.error('Erro ao criar preferência:', error);
+    res.status(500).json({ error: 'Erro ao gerar pagamento' });
   }
-  next();
-}
+});
+
+// Webhook do Mercado Pago
+app.post('/api/pagamentos/webhook', async (req, res) => {
+  try {
+    const { type, data } = req.body;
+
+    if (type === 'payment') {
+      const payment = await mercadopago.payment.findById(data.id);
+      
+      if (payment.body.status === 'approved') {
+        // Atualiza o status do pagamento no banco
+        await pool.query(
+          `UPDATE pagamentos 
+           SET status = 'approved', data_pagamento = NOW()
+           WHERE id_transacao_mp = $1`,
+          [payment.body.preference_id]
+        );
+
+        console.log(`Pagamento aprovado: ${payment.body.preference_id}`);
+      } else if (payment.body.status === 'rejected') {
+        await pool.query(
+          `UPDATE pagamentos 
+           SET status = 'rejected'
+           WHERE id_transacao_mp = $1`,
+          [payment.body.preference_id]
+        );
+
+        console.log(`Pagamento rejeitado: ${payment.body.preference_id}`);
+      }
+    }
+
+    res.status(200).send('OK');
+  } catch (error) {
+    console.error('Erro no webhook:', error);
+    res.status(500).send('Erro no webhook');
+  }
+});
+
+// Consultar status de pagamento
+app.get('/api/pagamentos/:preference_id', isLoggedIn, async (req, res) => {
+  try {
+    const { preference_id } = req.params;
+    const googleId = req.session.user.googleId;
+
+    // Busca o pagamento no banco
+    const result = await pool.query(`
+      SELECT p.*, u.nome as responsavel, a.nome as aluno
+      FROM pagamentos p
+      JOIN usuarios u ON p.id_usuario = u.id
+      LEFT JOIN alunos a ON p.id_aluno = a.id
+      WHERE p.id_transacao_mp = $1 AND u.google_id = $2
+    `, [preference_id, googleId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Pagamento não encontrado' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Erro ao consultar pagamento:', error);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+// Listar pagamentos do usuário
+app.get('/api/pagamentos', isLoggedIn, async (req, res) => {
+  try {
+    const googleId = req.session.user.googleId;
+
+    const result = await pool.query(`
+      SELECT p.*, a.nome as aluno
+      FROM pagamentos p
+      JOIN usuarios u ON p.id_usuario = u.id
+      LEFT JOIN alunos a ON p.id_aluno = a.id
+      WHERE u.google_id = $1
+      ORDER BY p.data_pagamento DESC
+    `, [googleId]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao listar pagamentos:', error);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+// ===== ROTAS DE NOTÍCIAS =====
+
+// Notícias públicas
+app.get('/noticias', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, titulo, corpo, imagem_url, criado_em FROM noticias ORDER BY criado_em DESC'
+    );
+    res.json(rows);
+  } catch (error) {
+    console.error('Erro ao buscar notícias:', error);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+// Rotas de admin para notícias
+app.get('/admin/noticias', isAdmin, async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM noticias ORDER BY criado_em DESC');
+    res.json(rows);
+  } catch (error) {
+    console.error('Erro ao listar notícias:', error);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+app.post('/admin/noticias', isAdmin, async (req, res) => {
+  try {
+    const { titulo, corpo, imagem_url } = req.body;
+    await pool.query(
+      'INSERT INTO noticias (titulo, corpo, imagem_url) VALUES ($1,$2,$3)',
+      [titulo, corpo, imagem_url || null]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Erro ao criar notícia:', error);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+app.put('/admin/noticias/:id', isAdmin, async (req, res) => {
+  try {
+    const { titulo, corpo, imagem_url } = req.body;
+    await pool.query(
+      'UPDATE noticias SET titulo=$1, corpo=$2, imagem_url=$3 WHERE id=$4',
+      [titulo, corpo, imagem_url || null, req.params.id]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Erro ao atualizar notícia:', error);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+app.delete('/admin/noticias/:id', isAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM noticias WHERE id=$1', [req.params.id]);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Erro ao deletar notícia:', error);
+    res.status(500).json({ error: 'Erro interno' });
+  }
+});
+
+// ===== CONFIGURAÇÃO DO NODEMAILER =====
+
+const transporter = nodemailer.createTransporter({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+app.post('/send-email', async (req, res) => {
+  try {
+    const { to, subject, text, html } = req.body;
+    
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to,
+      subject,
+      text,
+      html
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Erro ao enviar email:', error);
+    res.status(500).json({ error: 'Erro ao enviar email' });
+  }
+});
+
+// Inicia servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`);
+  console.log(`📧 Email configurado: ${process.env.EMAIL_USER ? 'Sim' : 'Não'}`);
+  console.log(`💳 Mercado Pago configurado: ${process.env.MERCADO_PAGO_ACCESS_TOKEN ? 'Sim' : 'Não'}`);
+});

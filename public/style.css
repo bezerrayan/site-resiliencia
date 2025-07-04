@@ -2292,6 +2292,7 @@ body:has(.carousel-minimal) .mobile-menu {
     transform: translateY(-5px);
 }
 
+
 .card-header {
     display: flex;
     align-items: center;
@@ -2515,3 +2516,4 @@ body:has(.carousel-minimal) .mobile-menu {
     padding: 0 0.3rem;
   }
 }
+
