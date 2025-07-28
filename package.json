@@ -7,7 +7,12 @@
     "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["futebol", "escola", "pagamentos", "mercadopago"],
+  "keywords": [
+    "futebol",
+    "escola",
+    "pagamentos",
+    "mercadopago"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

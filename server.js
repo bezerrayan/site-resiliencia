@@ -15,10 +15,12 @@ console.log('▶️ [server.js] DATABASE_URL =', process.env.DATABASE_URL);
 const app = express();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Configuração do Mercado Pago
-mercadopago.configure({
-  access_token: process.env.MERCADO_PAGO_ACCESS_TOKEN
+const { MercadoPagoConfig } = require('mercadopago');
+
+const mp = new MercadoPagoConfig({
+  accessToken: process.env.MP_ACCESS_TOKEN
 });
+
 
 // Middlewares
 app.use(cors());
